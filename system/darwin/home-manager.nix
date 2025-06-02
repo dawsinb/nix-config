@@ -10,6 +10,5 @@
 
     users.users.${host.user} = {
         home = "/Users/${host.user}";
-        shell = [ pkgs.zsh ];
     };
 }

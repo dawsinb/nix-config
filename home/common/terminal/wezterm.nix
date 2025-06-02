@@ -2,23 +2,30 @@
 { pkgs, ... }:
 
 {
-    home.packages = [ pkgs.wezterm ];
-    programs.wezterm = {
-        enable = true;
-        enableZshIntegration = true;
-        extraConfig = ''
-            -- Pull in the wezterm API
-            local wezterm = require 'wezterm'
+  home.packages = [ pkgs.wezterm ];
+  programs.wezterm = {
+    enable = true;
+    enableZshIntegration = true;
+    extraConfig = ''
+      local wezterm = require 'wezterm'
 
-            -- This will hold the configuration.
-            local config = wezterm.config_builder()
+      local config = wezterm.config_builder()
 
-            -- This is where you actually apply your config choices
-            -- For example, changing the color scheme:
-            config.font = wezterm.font 'JetBrainsMono Nerd Font'
+      -- Required for things to properly render
+      -- See: https://github.com/wez/wezterm/issues/5990
+      config.front_end = "WebGpu"
 
-            -- and finally, return the configuration to wezterm
-            return config
-        '';
-    };
+      config.color_scheme = "Catppuccin Mocha"
+      config.window_background_opacity = 0.85
+      config.macos_window_background_blur = 20
+
+      config.font = wezterm.font 'JetBrainsMono Nerd Font'
+
+      -- bar plugin
+      local bar = wezterm.plugin.require("https://github.com/adriankarlen/bar.wezterm")
+      bar.apply_to_config(config)
+
+      return config
+    '';
+  };
 }

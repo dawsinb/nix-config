@@ -4,8 +4,8 @@
     home.packages = [ pkgs.eza ];
     programs.eza = {
         enable = true;
-        icons = true;
         git = true;
+        icons = "always";
         extraOptions = [
             "--group-directories-first"
         ];

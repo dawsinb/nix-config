@@ -10,10 +10,6 @@
         darwin.url = "github:LnL7/nix-darwin/master";
         darwin.inputs.nixpkgs.follows = "nixpkgs";
 
-        # import an untracked host.nix file, see host.example.nix
-        host.url = "git+file:./host.nix";
-        host.flake = false;
-
         # Declarative tap management with nix-homebrew
         nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
         homebrew-core.url = "github:homebrew/homebrew-core";
@@ -26,6 +22,9 @@
 
         nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
         nix-vscode-extensions.inputs.nixpkgs.follows = "nixpkgs";
+
+        spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+        spicetify-nix.inputs.nixpkgs.follows = "nixpkgs";
     };
 
     outputs = inputs @ { self, ... }: with inputs;
@@ -35,7 +34,7 @@
             else throw "Could not find ./host.nix configuration file, please create a host.nix file to define your system.";
     in
     {
-        formatter.${host.system} = nixpgs.nixfmt;
+        formatter.${host.system} = nixpgs.nixfmt-rfc-style;
 
         # ${if host.platform == "linux" then "nixosConfigurations.${host.system}.default" else null} = nixpkgs.lib.nixosSystem {
         #     specialArgs = { inherit inputs; inherit host; };
@@ -48,12 +47,12 @@
             specialArgs = { inherit inputs; inherit host; };
             system = host.system;
             modules = [
+                inputs.home-manager.darwinModules.home-manager
+                inputs.nix-homebrew.darwinModules.nix-homebrew
+
                 ./system/common
                 ./system/darwin
 
-                inputs.home-manager.darwinModules.home-manager
-                inputs.nix-homebrew.darwinModules.nix-homebrew
-                
                 ({ pkgs, ... }:{
                     nixpkgs.overlays = [ rust-overlay.overlays.default ];
                     environment.systemPackages = [ (pkgs.rust-bin.stable.latest.default.override { extensions = ["rust-src" "rust-analyzer"]; }) ];

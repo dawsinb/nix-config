@@ -1,25 +1,27 @@
 { pkgs, ... }:
 
 {
-    nix = {
-        useDaemon = true;
+  nix = {
+    useDaemon = true;
 
-        settings = {
-            substituters = [ "https://cache.nixos.org" ];
-            auto-optimise-store = true;
-        };
-
-        gc = {
-            automatic = true;
-            options = "--delete-older-than 7d";
-        };
-
-        extraOptions = ''
-            experimental-features   = nix-command flakes
-            keep-outputs            = true
-            keep-derivations        = true
-        '';
+    settings = {
+      substituters = [ "https://cache.nixos.org" ];
     };
 
-    nixpkgs.config.allowUnfree = true;
+    optimise.automatic = true;
+
+    gc = {
+      automatic = true;
+      options = "--delete-older-than 7d";
+    };
+
+    extraOptions = ''
+      experimental-features   = nix-command flakes
+      keep-outputs            = true
+      keep-derivations        = true
+      warn-dirty              = false
+    '';
+  };
+
+  nixpkgs.config.allowUnfree = true;
 }

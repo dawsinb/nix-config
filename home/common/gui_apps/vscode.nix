@@ -12,6 +12,7 @@
         catppuccin.catppuccin-vsc
         mkhl.direnv
         nefrob.vscode-just-syntax
+        zxh404.vscode-proto3
       ];
     userSettings = {
       "workbench.colorTheme" = "Catppuccin Mocha";

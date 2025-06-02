@@ -4,10 +4,7 @@
     fontconfig.enable = true;
     fonts.packages = with pkgs; [
         dejavu_fonts
-        (nerdfonts.override {
-            fonts = [
-                "FiraCode"
-            ];
-        })
+        nerdfonts.jet-brains-mono
+        nerdonts.fira-code
     ];
 }
